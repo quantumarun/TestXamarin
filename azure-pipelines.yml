@@ -2,23 +2,54 @@
 # Build a Xamarin.Android project.
 # Add steps that test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
+ 
+    jobs:
+    
+    - job: Android
+      pool:
+        vmImage: 'macOS 10.13'
+      variables:
+        buildConfiguration: 'Release'
+        outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+      steps:
+      - task: NuGetToolInstaller@0
+      
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '**/*.sln'
+          
+      - task: XamarinAndroid@1
+        inputs:
+          projectFile: '**/*Droid*.csproj'
+          outputDirectory: '$(outputDirectory)'
+          configuration: '$(buildConfiguration)'
+          
+      - task: AndroidSigning@3
+        inputs:
+          apksign: false
+          zipalign: false
+          apkFiles: '$(outputDirectory)/*.apk'
 
-pool:
-  vmImage: 'macOS 10.13'
-
-variables:
-  buildConfiguration: 'Release'
-  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
-
-steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '**/*.sln'
-
-- task: XamarinAndroid@1
-  inputs:
-    projectFile: '**/*Droid*.csproj'
-    outputDirectory: '$(outputDirectory)'
-    configuration: '$(buildConfiguration)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(outputDirectory)'
+          
+      
+    - job: iOS
+      pool:
+        vmImage: 'macOS-10.13'
+      variables:
+        buildConfiguration: 'Release'
+      steps:
+      - task: NuGetToolInstaller@0
+      
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '**/*.sln'
+          
+      - task: XamariniOS@2
+        inputs:
+          solutionFile: '**/*.sln'
+          configuration: '$(buildConfiguration)'
+          buildForSimulator: true
+          packageApp: false      
