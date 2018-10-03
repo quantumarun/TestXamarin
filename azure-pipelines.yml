@@ -60,7 +60,7 @@
         inputs:
           solutionFile: '**/*.sln'
           configuration: '$(buildConfiguration)'
-          buildForSimulator: false
+          buildForSimulator: true
           #clean: false # Optional
           packageApp: false
           runNugetRestore: false 
