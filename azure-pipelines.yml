@@ -62,7 +62,7 @@
           configuration: '$(buildConfiguration)'
           buildForSimulator: false
           #clean: false # Optional
-          packageApp: true
+          packageApp: false
           runNugetRestore: false 
           #args: # Optional
           #workingDirectory: # Optional
