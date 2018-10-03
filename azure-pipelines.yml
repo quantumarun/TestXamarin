@@ -35,6 +35,11 @@
       - task: PublishBuildArtifacts@1
         inputs:
           pathtoPublish: '$(outputDirectory)'
+          #jarsign: true
+          #jarsignerKeystoreFile: 'pathToYourKeystoreFile'
+          #jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
+          #jarsignerKeystoreAlias: 'yourKeystoreAlias'
+          #jarsignerKeyPassword: '$(jarsignerKeyPassword)'
           
       
     - job: iOS
@@ -55,5 +60,12 @@
         inputs:
           solutionFile: '**/*.sln'
           configuration: '$(buildConfiguration)'
-          buildForSimulator: true
-          packageApp: false      
+          buildForSimulator: false
+          #clean: false # Optional
+          packageApp: false
+          runNugetRestore: false 
+          #args: # Optional
+          #workingDirectory: # Optional
+          #mdtoolFile: # Optional
+          #signingIdentity: # Optional
+          #signingProvisioningProfileID: # Optional     
