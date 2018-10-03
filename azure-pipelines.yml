@@ -8,9 +8,11 @@
     - job: Android
       pool:
         vmImage: 'macOS 10.13'
+        
       variables:
         buildConfiguration: 'Release'
         outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+        
       steps:
       - task: NuGetToolInstaller@0
       
@@ -30,16 +32,18 @@
           zipalign: false
           apkFiles: '$(outputDirectory)/*.apk'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(outputDirectory)'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(outputDirectory)'
           
       
     - job: iOS
       pool:
         vmImage: 'macOS-10.13'
+        
       variables:
         buildConfiguration: 'Release'
+        
       steps:
       - task: NuGetToolInstaller@0
       
